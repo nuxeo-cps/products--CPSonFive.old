@@ -35,6 +35,8 @@ class DocumentBrowserWidget(TextWidget):
 
     def _toFieldValue(self, input):
         try:
+            if not input:
+                return input
             input = str(input)
             context = self.context.context
             portal_url = getToolByName(context, 'portal_url')
