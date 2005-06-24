@@ -1,0 +1,12 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:five="http://namespaces.zope.org/five"
+           xmlns:browser="http://namespaces.zope.org/browser"> 
+
+  <browser:page
+    for=".form.interfaces.IDocumentNavigation"
+    template="documentnavigation_popup.pt"
+    name="documentnavigation_popup"
+    permission="zope.Public"
+    />
+
+</configure>
