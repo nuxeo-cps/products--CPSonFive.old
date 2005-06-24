@@ -1,13 +1,53 @@
+# -*- coding: ISO-8859-15 -*-
+# (C) Copyright 2005 Nuxeo SARL <http://nuxeo.com>
+# Author: Lennart Regebro <regebro@nuxeo.com>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as published
+# by the Free Software Foundation.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+# 02111-1307, USA.
+#
+# $Id: calendar.py 24398 2005-06-24 12:34:57Z lregebro $
+
 from zope.app.form.browser import TextWidget
 from zope.app.form.browser.widget import renderElement
 from zope.app.datetimeutils import DateTimeError
 from zope.app.form.interfaces import ConversionError, WidgetInputError
 from zope.app.form.interfaces import InputErrors
 from zope.schema.interfaces import ValidationError
+from Products.CMFCore.utils import getToolByName
+
+from zope.i18nmessageid import MessageIDFactory
+_ = MessageIDFactory("calendar")
 
 class DocumentBrowserWidget(TextWidget):
 
     displayWidth = 30
+
+    def _toFieldValue(self, input):
+        try:
+            input = str(input)
+            context = self.context.context
+            portal_url = getToolByName(context, 'portal_url')
+            portal_path = portal_url.getPortalPath()
+            if not input.startswith(portal_path):
+                if input[0] != '/':
+                    input = '/' + input
+                input = portal_path + input
+            
+            obj = context.unrestrictedTraverse(input)
+            return u'/'.join(obj.getPhysicalPath())
+        except (AttributeError, KeyError), v:
+            raise ConversionError("Selected object not found", v)
 
     def __call__(self):
         value = self._getFormValue()
@@ -26,6 +66,7 @@ class DocumentBrowserWidget(TextWidget):
                           "'toolbar=0, scrollbars=1, location=0, " \
                           "statusbar=0, menubar=0, resizable=1, dependent=1, " \
                           "width=500, height=480')"
-        btn = renderElement("button", style=style, onClick=js, contents="Pressme!" )
-        return res + btn
+        btn = renderElement("button", style=style, onClick=js, 
+                            contents=_("..."))
+        return res + "&nbsp;" + btn
         
