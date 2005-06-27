@@ -63,12 +63,12 @@ class DocumentBrowserWidget(TextWidget):
                             size=self.displayWidth,
                             extra=self.extra)
         style = "text-decoration:none;border:1px solid black;padding:0.2em 0.3em;"
-        js = "window.open('../../documentnavigation_popup?input_id=" + \
+        js = "window.open('documentnavigation_popup?input_id=" + \
                           self.name + "', 'DirectoryMultiEntryFinder', " \
                           "'toolbar=0, scrollbars=1, location=0, " \
                           "statusbar=0, menubar=0, resizable=1, dependent=1, " \
                           "width=500, height=480')"
-        btn = renderElement("button", style=style, onClick=js, 
-                            contents=_("..."))
+        btn = renderElement("input", type="button", style=style, onClick=js, 
+                            value=_("..."))
         return res + "&nbsp;" + btn
         
