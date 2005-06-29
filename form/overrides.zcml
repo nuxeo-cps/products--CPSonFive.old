@@ -3,6 +3,11 @@
            xmlns:browser="http://namespaces.zope.org/browser"
            > 
   
-  <include file="form/overrides.zcml" />
+  <browser:page
+    for="*"
+    name="widget_macros"
+    template="widget_macros.pt"
+    permission="zope.Public"
+    />
     
 </configure>
