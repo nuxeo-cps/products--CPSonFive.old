@@ -27,7 +27,7 @@ from zope.schema.interfaces import ValidationError
 from Products.CMFCore.utils import getToolByName
 
 from zope.i18nmessageid import MessageIDFactory
-_ = MessageIDFactory("calendar")
+_ = MessageIDFactory("Default")
 
 class DocumentBrowserWidget(TextWidget):
 
