@@ -3,7 +3,8 @@ Requires:
 -
 New features:
 ~~~~~~~~~~~~~
--
+- A bug ZopeX3 3.0.0 is that the contents of drop-down boxes are not 
+  translated. CPSonFive now monkeypatches this.
 Bug fixes:
 ~~~~~~~~~~
 -
