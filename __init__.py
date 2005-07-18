@@ -21,7 +21,7 @@
 
 This product is the container for any reusable integration between CPS and Five.
 """
-
+from types import StringTypes
 from zope.schema.interfaces import ITitledTokenizedTerm
 
 # Zope3.0.0 doesn't translates dropdownboxes (that's a bug)
@@ -38,10 +38,16 @@ def textForValue(self, term):
     #     return self.translate(term.title)
     # return self.translate(term.token)
 
-    # XXX: But with Five 1.0.x we need to call Localizer:
+    # XXX: But with Five 1.0.x we need to call Localizer, and we also need to
+    # make sure Localizer gets a string, and not a MessageID
     if ITitledTokenizedTerm.providedBy(term):
-        return self.context.context.Localizer.default(term.title)
-    return self.context.context.Localizer.default(term.token)
+        message = term.title
+    else:
+        message = term.token
+
+    if type(message) not in StringTypes:
+        message = str(message)
+    return self.context.context.Localizer.default(message)
 
 
 def initialize(context):
