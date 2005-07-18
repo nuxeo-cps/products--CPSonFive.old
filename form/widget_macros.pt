@@ -9,8 +9,8 @@
       </div>
       <div class="field">
         <tal:block tal:content="structure widget"/>
-        <span tal:define="error widget/error"
-          tal:condition="error" tal:content="structure error"
+        <span tal:define="error widget/error" class="error"
+          tal:condition="error" tal:content="error"
           i18n:translate="" >
           The Error
         </span>

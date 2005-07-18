@@ -18,16 +18,31 @@
 #
 # $Id: calendar.py 24398 2005-06-24 12:34:57Z lregebro $
 
+from cgi import escape
 from zope.app.form.browser import TextWidget
 from zope.app.form.browser.widget import renderElement
-from zope.app.datetimeutils import DateTimeError
+from zope.app.form.browser.exception import WidgetInputErrorView
 from zope.app.form.interfaces import ConversionError, WidgetInputError
-from zope.app.form.interfaces import InputErrors
-from zope.schema.interfaces import ValidationError
-from Products.CMFCore.utils import getToolByName
 
+from Products.CMFCore.utils import getToolByName
 from zope.i18nmessageid import MessageIDFactory
 _ = MessageIDFactory("Default")
+
+class CPSWidgetInputErrorView(WidgetInputErrorView):
+    """Display an input error as a snippet of text.
+
+    In Zope 3.0.0, error messages are wrapped in double <span class="error"> 
+    tags. This is ugly and complicates translation. We replace these with
+    our own error messages that are unwrapped. Another possibility would be 
+    to translate them inside this view. That would give us the possibility
+    to have different CSS classes for different errors, but we don't need
+    that at the moment.
+    """
+
+    def snippet(self):
+        """Convert a widget input error to an html snippet"""
+        return escape(self.context.doc())
+
 
 class DocumentBrowserWidget(TextWidget):
 
