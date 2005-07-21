@@ -5,6 +5,8 @@ New features:
 ~~~~~~~~~~~~~
 - A bug ZopeX3 3.0.0 is that the contents of drop-down boxes are not 
   translated. CPSonFive now monkeypatches this.
+- Form error messages was not translated. CPSonFive now overrides the
+  WidgetInputError view to fix this.
 Bug fixes:
 ~~~~~~~~~~
 -
