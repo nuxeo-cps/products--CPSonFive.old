@@ -1,4 +1,23 @@
 *******************************************
+** CPSonFive V1.0.0 [R1 build 2005/07/21-16:29 by regebro]
+** SVN URL: https://svn.nuxeo.org/pub/CPSonFive/trunk Revision: 25148
+Requires:
+~~~~~~~~~
+-
+New features:
+~~~~~~~~~~~~~
+- A bug ZopeX3 3.0.0 is that the contents of drop-down boxes are not 
+  translated. CPSonFive now monkeypatches this.
+- Form error messages was not translated. CPSonFive now overrides the
+  WidgetInputError view to fix this.
+Bug fixes:
+~~~~~~~~~~
+-
+New internal features:
+~~~~~~~~~~~~~~~~~~~~~~
+-
+
+*******************************************
 ** CPSonFive V0.1.0 [R1 build 2005/06/29-11:07 by regebro]
 ** SVN URL: https://svn.nuxeo.org/pub/CPSonFive/trunk Revision: 24514
 Initial Release
