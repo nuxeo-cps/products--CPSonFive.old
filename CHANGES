@@ -3,7 +3,8 @@ Requires:
 -
 New features:
 ~~~~~~~~~~~~~
--
+- There is now a new IHTTPRequest to IUserPreferredCharsets adapter that
+  forces everything to be ISO-8859-15, which is what we want for CPS.
 Bug fixes:
 ~~~~~~~~~~
 -

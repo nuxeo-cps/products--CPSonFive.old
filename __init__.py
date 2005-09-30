@@ -49,17 +49,26 @@ def textForValue(self, term):
         message = str(message)
     return self.context.context.Localizer.default(message)
 
+from zope.i18n.interfaces import IUserPreferredCharsets
+from zope.interface import implements
+
+class ISO15Charset(object):
+    # This object implements the selector function for IUserPreferredCharsets
+    # but doesn't care what the user prefer, It returns ISO-8859-15 anyway.
+    # XXX For support of non-european languages, we need to match this with 
+    # the selected UI language somehow. 
+    implements(IUserPreferredCharsets)
+
+    def __init__(self, request):
+        self.request = request
+        
+    def getPreferredCharsets(self):
+        '''See interface IUserPreferredCharsets'''
+        return ['iso-8859-15']
 
 def initialize(context):
 
     # Zope3monkey
     from zope.app.form.browser.itemswidgets import ItemsWidgetBase
     ItemsWidgetBase.textForValue = textForValue
-    
-    ## Five monkey
-    # Hm? Why? Probably this fix has been pushed into Five by now, because 
-    # this edit.pt is exactly the same as Fives...
-    #from Products.Five.browser import EditView
-    #from Products.Five.pagetemplatefile import FivePageTemplateFile
-    #EditView.generated_form = FivePageTemplateFile('edit.pt')
     
