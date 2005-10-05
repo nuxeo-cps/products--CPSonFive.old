@@ -3,7 +3,8 @@ Requires:
 -
 New features:
 ~~~~~~~~~~~~~
--
+- Now monkey patches the update method of EditViews to return a translated
+  status message.
 Bug fixes:
 ~~~~~~~~~~
 -

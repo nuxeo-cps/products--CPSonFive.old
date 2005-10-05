@@ -66,9 +66,68 @@ class ISO15Charset(object):
         '''See interface IUserPreferredCharsets'''
         return ['iso-8859-15']
 
+
+try: # Five 1.1
+    from Products.Five.form import EditView, Update, applyWidgetsChanges
+except ImportError: # Five 1.0
+    from Products.Five.browser import EditView, Update
+from zope.app.form.interfaces import WidgetsError
+from zope.app.form.utility import setUpEditWidgets, applyWidgetsChanges
+from zope.app.event.objectevent import ObjectModifiedEvent
+from zope.app.i18n import ZopeMessageIDFactory as _
+import transaction, datetime
+
+def EditViewUpdate(self):
+    if self.update_status is not None:
+        # We've been called before. Just return the status we previously
+        # computed.
+        return self.update_status
+
+    status = ''
+
+    content = self.adapted
+
+    if Update in self.request.form.keys():
+        changed = False
+        try:
+            changed = applyWidgetsChanges(self, self.schema,
+                target=content, names=self.fieldNames)
+            # We should not generate events when an adapter is used.
+            # That's the adapter's job.
+            if changed and self.context is self.adapted:
+                notify(ObjectModifiedEvent(content))
+        except WidgetsError, errors:
+            self.errors = errors
+            status = _("An error occured.")
+            transaction.abort()
+        else:
+            setUpEditWidgets(self, self.schema, source=self.adapted,
+                             ignoreStickyValues=True,
+                             names=self.fieldNames)
+            if changed:
+                self.changed()
+                # It's going to be very nice to drop Five 1.0.x support:
+                localizer = getattr(self.context, 'Localizer', None)
+                if localizer is not None:
+                    
+                    status = localizer.default("Updated on %(date_time)s")
+                    format = str(localizer.default('date_medium'))
+                    date = datetime.datetime.now().strftime(format)
+                    status = status % {'date_time': date}
+                else:
+                    status = _("Updated on ${date_time}")
+                    status.mapping = {'date_time': str(datetime.utcnow())}
+
+    self.update_status = status
+    return status
+    
+    
 def initialize(context):
 
     # Zope3monkey
     from zope.app.form.browser.itemswidgets import ItemsWidgetBase
     ItemsWidgetBase.textForValue = textForValue
+    
+    # Five monkey
+    EditView.update = EditViewUpdate
     
