@@ -74,7 +74,10 @@ except ImportError: # Five 1.0
 from zope.app.form.interfaces import WidgetsError
 from zope.app.form.utility import setUpEditWidgets, applyWidgetsChanges
 from zope.app.event.objectevent import ObjectModifiedEvent
-from zope.app.i18n import ZopeMessageIDFactory as _
+try:
+    from zope.app.i18n import ZopeMessageFactory as _
+except:
+    from zope.app.i18n import ZopeMessageIDFactory as _
 import transaction, datetime
 
 def EditViewUpdate(self):
