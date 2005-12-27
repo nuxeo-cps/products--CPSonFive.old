@@ -25,8 +25,11 @@ from zope.app.form.browser.exception import WidgetInputErrorView
 from zope.app.form.interfaces import ConversionError, WidgetInputError
 
 from Products.CMFCore.utils import getToolByName
-from zope.i18nmessageid import MessageIDFactory
-_ = MessageIDFactory("Default")
+try:
+    from zope.i18nmessageid import MessageFactory
+except ImportError:
+    from zope.i18nmessageid import MessageIDFactory as MessageFactory
+_ = MessageFactory("Default")
 
 class CPSWidgetInputErrorView(WidgetInputErrorView):
     """Display an input error as a snippet of text.
@@ -86,4 +89,3 @@ class DocumentBrowserWidget(TextWidget):
         btn = renderElement("input", type="button", style=style, onClick=js, 
                             value=_("..."))
         return res + "&nbsp;" + btn
-        
