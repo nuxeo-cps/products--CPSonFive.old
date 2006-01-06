@@ -1,9 +1,10 @@
 Requires:
 ~~~~~~~~~
--
+- Now requires Five 1.2b or later.
 New features:
 ~~~~~~~~~~~~~
--
+- Marks a CPS site as a local site, enabling the use of local utilities.
+- Added a temporary monkey patch for a big in the betas of Five 1.2, 1.3.
 Bug fixes:
 ~~~~~~~~~~
 -

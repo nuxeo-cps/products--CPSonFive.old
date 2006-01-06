@@ -4,4 +4,7 @@
 
   <include file="form/configure.zcml" />
 
+  <five:localsite class="Products.CPSDefault.Portal.CPSDefaultSite" />
+  <five:traversable class="Products.CPSDefault.Portal.CPSDefaultSite" />
+
 </configure>

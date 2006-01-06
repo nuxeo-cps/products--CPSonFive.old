@@ -11,4 +11,13 @@
       provides="zope.i18n.interfaces.IUserPreferredCharsets"
       />
 
+  <adapter
+      for="zope.publisher.interfaces.http.IHTTPRequest" 
+      provides="zope.i18n.interfaces.IUserPreferredLanguages" 
+      factory="Products.Five.i18n.LocalizerLanguages"
+      />
+
+  <five:localsite class="Products.CPSDefault.Portal.CPSDefaultSite" />
+  <five:traversable class="Products.CPSDefault.Portal.CPSDefaultSite" />
+
 </configure>

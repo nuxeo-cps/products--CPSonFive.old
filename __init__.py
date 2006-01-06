@@ -23,6 +23,7 @@ This product is the container for any reusable integration between CPS and Five.
 """
 from types import StringTypes
 from zope.schema.interfaces import ITitledTokenizedTerm
+from zope.i18nmessageid.messageid import MessageID
 
 # Zope3.0.0 doesn't translates dropdownboxes (that's a bug)
 def textForValue(self, term):
@@ -33,21 +34,10 @@ def textForValue(self, term):
     This can be overridden to support more complex term objects. The token
     is returned here since it's the only thing known to be a string, or
     str()able."""
-    # XXX: This is how it should be once we start using Five 1.1, with i18n.
-    # if ITitledTokenizedTerm.providedBy(term):
-    #     return self.translate(term.title)
-    # return self.translate(term.token)
-
-    # XXX: But with Five 1.0.x we need to call Localizer, and we also need to
-    # make sure Localizer gets a string, and not a MessageID
     if ITitledTokenizedTerm.providedBy(term):
-        message = term.title
-    else:
-        message = term.token
+        return self.translate(term.title)
+    return self.translate(term.token)
 
-    if type(message) not in StringTypes:
-        message = str(message)
-    return self.context.context.Localizer.default(message)
 
 from zope.i18n.interfaces import IUserPreferredCharsets
 from zope.interface import implements
@@ -123,14 +113,49 @@ def EditViewUpdate(self):
 
     self.update_status = status
     return status
-    
+
+# XXX: Five 1.2b and 1.3b and Zope 2.9 betas have a bug the local site 
+# configuration, which can result in one class getting listed twice in the 
+# list of classes that have a site hook. This monkey avoids that, and can be 
+# removed once the final versions have been released:
+from Products.Five.site import metaconfigure
+from Products.Five.site.localsite import FiveSite
+from zope.app.component.interfaces import IPossibleSite
+from zope.configuration.exceptions import ConfigurationError
+from zope.interface import classImplements
+
+def installSiteHook(_context, class_, site_class=None):
+    if class_ in metaconfigure._localsite_monkies:
+        return # This is the workaround
+    if site_class is None:
+        if not IPossibleSite.implementedBy(class_):
+            # This is not a possible site, we need to monkey-patch it so that
+            # it is.
+            site_class = FiveSite
+    else:
+        if not IPossibleSite.implementedBy(site_class):
+            raise ConfigurationError('Site class does not implement '
+                                     'IPossibleClass: %s' % site_class)
+    if site_class is not None:
+        _context.action(
+            discriminator = (class_,),
+            callable = metaconfigure.classSiteHook,
+            args=(class_, site_class)
+            )
+        _context.action(
+            discriminator = (class_, IPossibleSite),
+            callable = classImplements,
+            args=(class_, IPossibleSite)
+            )
+    metaconfigure._localsite_monkies.append(class_)
+
+metaconfigure.installSiteHook = installSiteHook
+
     
 def initialize(context):
 
     # Zope3monkey
     from zope.app.form.browser.itemswidgets import ItemsWidgetBase
     ItemsWidgetBase.textForValue = textForValue
-    
     # Five monkey
     EditView.update = EditViewUpdate
-    
