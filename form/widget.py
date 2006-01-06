@@ -29,7 +29,7 @@ try:
     from zope.i18nmessageid import MessageFactory
 except ImportError:
     from zope.i18nmessageid import MessageIDFactory as MessageFactory
-_ = MessageFactory("calendar")
+_ = MessageFactory("Default")
 
 class CPSWidgetInputErrorView(WidgetInputErrorView):
     """Display an input error as a snippet of text.
