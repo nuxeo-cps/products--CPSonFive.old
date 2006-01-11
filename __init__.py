@@ -23,7 +23,7 @@ This product is the container for any reusable integration between CPS and Five.
 """
 from types import StringTypes
 from zope.schema.interfaces import ITitledTokenizedTerm
-from zope.i18nmessageid.messageid import MessageID
+from zope.i18nmessageid import Message
 
 # Zope3.0.0 doesn't translates dropdownboxes (that's a bug)
 def textForValue(self, term):
@@ -113,44 +113,6 @@ def EditViewUpdate(self):
 
     self.update_status = status
     return status
-
-# XXX: Five 1.2b and 1.3b and Zope 2.9 betas have a bug the local site 
-# configuration, which can result in one class getting listed twice in the 
-# list of classes that have a site hook. This monkey avoids that, and can be 
-# removed once the final versions have been released:
-from Products.Five.site import metaconfigure
-from Products.Five.site.localsite import FiveSite
-from zope.app.component.interfaces import IPossibleSite
-from zope.configuration.exceptions import ConfigurationError
-from zope.interface import classImplements
-
-def installSiteHook(_context, class_, site_class=None):
-    if class_ in metaconfigure._localsite_monkies:
-        return # This is the workaround
-    if site_class is None:
-        if not IPossibleSite.implementedBy(class_):
-            # This is not a possible site, we need to monkey-patch it so that
-            # it is.
-            site_class = FiveSite
-    else:
-        if not IPossibleSite.implementedBy(site_class):
-            raise ConfigurationError('Site class does not implement '
-                                     'IPossibleClass: %s' % site_class)
-    if site_class is not None:
-        _context.action(
-            discriminator = (class_,),
-            callable = metaconfigure.classSiteHook,
-            args=(class_, site_class)
-            )
-        _context.action(
-            discriminator = (class_, IPossibleSite),
-            callable = classImplements,
-            args=(class_, IPossibleSite)
-            )
-    metaconfigure._localsite_monkies.append(class_)
-
-metaconfigure.installSiteHook = installSiteHook
-
     
 def initialize(context):
 
