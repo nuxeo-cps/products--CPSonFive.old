@@ -17,7 +17,4 @@
       factory="Products.Five.i18n.LocalizerLanguages"
       />
 
-  <five:localsite class="Products.CPSDefault.Portal.CPSDefaultSite" />
-  <five:traversable class="Products.CPSDefault.Portal.CPSDefaultSite" />
-
 </configure>
