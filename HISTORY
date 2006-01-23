@@ -1,4 +1,20 @@
 *******************************************
+** CPSonFive V1.3.0 [R1 build 2006/01/23-17:33 by fermigier]
+** SVN URL: https://svn.nuxeo.org/pub/CPSonFive/trunk Revision: 31976
+Requires:
+~~~~~~~~~
+- Now requires Five 1.2b or later.
+New features:
+~~~~~~~~~~~~~
+- Marks a CPS site as a local site, enabling the use of local utilities.
+Bug fixes:
+~~~~~~~~~~
+-
+New internal features:
+~~~~~~~~~~~~~~~~~~~~~~
+-
+
+*******************************************
 ** CPSonFive V1.2.0 [R1 build 2005/10/06-12:38 by regebro]
 ** SVN URL: https://svn.nuxeo.org/pub/CPSonFive/trunk Revision: 28001
 Requires:
