@@ -1,7 +1,8 @@
 <tal:block define="emptybody python:1">
 <metal:block use-macro="here/main_template/macros/master">
 <metal:block fill-slot="body"
-  tal:define="root_uid string:sections;
+  tal:define="roots ttool/objectIds;
+	      root_uid request/form/root_uid|string:sections;
               doc here/document|nothing;
               res python:here.getCalendarNavigation(finder='cps',
                 root_uid=root_uid, current_uid=doc, REQUEST=request);
@@ -10,6 +11,14 @@
 	      isCPS32 python:navlibskin is not None;
 	      ">
 
+<span style="border:1px;border-style:solid;padding:3px" tal:repeat="root roots">
+<a tal:condition="python:root_uid != root"
+   tal:attributes="href string:${request/URL}?root_uid=${root}&input_id=${request/form/input_id}" 
+   tal:content="root" i18n:translate="" />
+<span tal:condition="python:root_uid == root"
+   tal:content="root" i18n:translate="" />      
+</span>
+<h1 tal:content="root_uid" i18n:translate="" />
 <tal:block condition="isCPS32">
   <metal:block
     use-macro="here/navigation_lib/macros/select_navigation">
