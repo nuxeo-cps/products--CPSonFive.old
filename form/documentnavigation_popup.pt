@@ -4,7 +4,7 @@
   tal:define="roots ttool/objectIds;
 	      root_uid request/form/root_uid|string:sections;
               doc here/document|nothing;
-              res python:here.getCalendarNavigation(finder='cps',
+              res python:here.getDocumentNavigation(finder='cps',
                 root_uid=root_uid, current_uid=doc, REQUEST=request);
               type string:folder;
 	      navlibskin nocall:here/navigation_lib|nothing;

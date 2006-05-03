@@ -11,4 +11,6 @@ Bug fixes:
 -
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
--
+- Calling the Document Navigation method "getCalendarNavigation" didn't
+  make any sense, and is a leftover since this was a part of the calendar.
+  It is now called "getDocumentNavigation".

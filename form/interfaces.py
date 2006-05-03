@@ -22,7 +22,7 @@ from zope.interface import Interface
 class IDocumentNavigation(Interface):
     """Support for popup document navigation windows"""
     
-    def getCalendarNavigation(finder, root_uid, current_uid=None, REQUEST=None):
+    def getDocumentNavigation(finder, root_uid, current_uid=None, REQUEST=None):
         """Returns a CPSNavigation object
 
         The navigation popup uses a CPSNavigation object to display a 
