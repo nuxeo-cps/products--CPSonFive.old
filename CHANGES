@@ -3,7 +3,9 @@ Requires:
 -
 New features:
 ~~~~~~~~~~~~~
--
+- The document navigation popup widget now displays a list of available
+  document trees on top, enabling you to browse to documents. Both in the
+  workspaces and sections.
 Bug fixes:
 ~~~~~~~~~~
 -
