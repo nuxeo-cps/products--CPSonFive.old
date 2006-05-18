@@ -31,22 +31,6 @@ except ImportError:
     from zope.i18nmessageid import MessageIDFactory as MessageFactory
 _ = MessageFactory("Default")
 
-class CPSWidgetInputErrorView(WidgetInputErrorView):
-    """Display an input error as a snippet of text.
-
-    In Zope 3.0.0, error messages are wrapped in double <span class="error"> 
-    tags. This is ugly and complicates translation. We replace these with
-    our own error messages that are unwrapped. Another possibility would be 
-    to translate them inside this view. That would give us the possibility
-    to have different CSS classes for different errors, but we don't need
-    that at the moment.
-    """
-
-    def snippet(self):
-        """Convert a widget input error to an html snippet"""
-        return escape(self.context.doc())
-
-
 class DocumentBrowserWidget(TextWidget):
 
     displayWidth = 30

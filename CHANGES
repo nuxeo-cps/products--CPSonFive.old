@@ -8,7 +8,8 @@ New features:
   workspaces and sections.
 Bug fixes:
 ~~~~~~~~~~
--
+- 0004430: With the upgrade to Zope3 style i18n, the Widget error override 
+  ment that widget errors didn't get translated if they were Messages.
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
 - Calling the Document Navigation method "getCalendarNavigation" didn't

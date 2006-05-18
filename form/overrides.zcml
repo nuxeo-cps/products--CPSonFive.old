@@ -10,12 +10,4 @@
     permission="zope.Public"
     />
 
-  <view
-    type="zope.publisher.interfaces.browser.IBrowserRequest"
-    for="zope.app.form.interfaces.IWidgetInputError"
-    provides="zope.app.form.browser.interfaces.IWidgetInputErrorView"
-    factory="Products.CPSonFive.form.widget.CPSWidgetInputErrorView"
-    permission="zope.Public"
-    />
-
 </configure>
