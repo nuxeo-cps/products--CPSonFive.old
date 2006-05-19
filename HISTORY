@@ -1,4 +1,25 @@
 *******************************************
+** CPSonFive V1.4.0 [R1 build 2006/05/19-13:32 by fermigier]
+** SVN URL: https://svn.nuxeo.org/pub/CPS3/products/CPSonFive/trunk Revision: 45805
+Requires:
+~~~~~~~~~
+-
+New features:
+~~~~~~~~~~~~~
+- The document navigation popup widget now displays a list of available
+  document trees on top, enabling you to browse to documents. Both in the
+  workspaces and sections.
+Bug fixes:
+~~~~~~~~~~
+- 0004430: With the upgrade to Zope3 style i18n, the Widget error override 
+  ment that widget errors didn't get translated if they were Messages.
+New internal features:
+~~~~~~~~~~~~~~~~~~~~~~
+- Calling the Document Navigation method "getCalendarNavigation" didn't
+  make any sense, and is a leftover since this was a part of the calendar.
+  It is now called "getDocumentNavigation".
+
+*******************************************
 ** CPSonFive V1.3.0 [R1 build 2006/01/23-17:33 by fermigier]
 ** SVN URL: https://svn.nuxeo.org/pub/CPSonFive/trunk Revision: 31976
 Requires:
