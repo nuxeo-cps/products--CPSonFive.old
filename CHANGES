@@ -3,7 +3,9 @@ Requires:
 -
 New features:
 ~~~~~~~~~~~~~
--
+- CPSonFive now uses it's own IUserPreferredLanguages adapter.
+- CPSonFive now implements an ILanguageAvailability adapter, that will
+  return the languages that are available for the current site.
 Bug fixes:
 ~~~~~~~~~~
 -

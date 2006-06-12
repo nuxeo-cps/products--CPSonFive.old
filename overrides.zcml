@@ -14,7 +14,16 @@
   <adapter
       for="zope.publisher.interfaces.http.IHTTPRequest" 
       provides="zope.i18n.interfaces.IUserPreferredLanguages" 
-      factory="Products.Five.i18n.LocalizerLanguages"
+      factory="Products.CPSonFive.UserLanguages"
+      />
+
+  <!-- I register this for *, so that you don't have to look up the site
+       first. It will fail if you try to adapt anything that can't
+       acquire the translation_serveice tool /-->
+  <adapter
+      for="*" 
+      provides="zope.i18n.interfaces.ILanguageAvailability" 
+      factory="Products.CPSonFive.CPSLanguages"
       />
 
 </configure>

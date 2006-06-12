@@ -21,6 +21,8 @@
 
 This product is the container for any reusable integration between CPS and Five.
 """
+from zope.interface import implements
+
 from types import StringTypes
 from zope.schema.interfaces import ITitledTokenizedTerm
 from zope.i18nmessageid import Message
@@ -40,7 +42,6 @@ def textForValue(self, term):
 
 
 from zope.i18n.interfaces import IUserPreferredCharsets
-from zope.interface import implements
 
 class ISO15Charset(object):
     # This object implements the selector function for IUserPreferredCharsets
@@ -113,6 +114,65 @@ def EditViewUpdate(self):
 
     self.update_status = status
     return status
+
+from zope.i18n.interfaces import IUserPreferredLanguages, ILanguageAvailability
+
+class UserLanguages(object):
+    """Return the preferred language.
+    
+    This one cares about the LOCALIZER_LANGUAGE used by CPS/Localizer to
+    explicitly select a language. The LocalizerLanguages component in Five
+    also does this, but via the overcomplicated Localizer.AcceptLanguage 
+    who seldom returns what we want or expect.
+    So I use this instead. //Lennart."""
+    implements(IUserPreferredLanguages)
+
+    def __init__(self, request):
+        self.request = request
+
+    def getPreferredLanguages(self):
+        accept_language = self.request.HTTP_ACCEPT_LANGUAGE
+        localizer_language = self.request.get('LOCALIZER_LANGUAGE')
+
+        ## Remove any spaces, change _ to -, make all lowercase:
+        #accept_language = accept_language.replace(' ', '')
+        #accept_language = accept_language.replace('_', '-')
+        #accept_language = accept_language.lower()
+        langs = []
+        for lang in accept_language.split(','):
+            if lang.find(';') != -1:
+                lang, q = lang.split(';')
+                q = float(q[2:]) # remove the "q=" and make into a float
+            else:
+                q = 1.0
+            if lang == localizer_language:
+                q = 2.0
+            langs.append((q, lang))
+                    
+        # Make into a list of tuples (with value first, and key last):
+        langs.sort()
+        langs.reverse()
+        # Return languages in order of quality
+        return [l for q, l in langs]
+
+class CPSLanguages(object):
+    """Returns the languages that exist in a CPS site"""
+    
+    implements(ILanguageAvailability)
+
+    def __init__(self, context):
+        self.context = context
+        
+    def getAvailableLanguages(self):
+        pts = self.context.translation_service
+        languages = []
+        for lang in [pts.getDefaultLanguage()] + pts.getSupportedLanguages():
+            # Localizer uses the format xx_YY instead of xx-yy:
+            lang = lang.replace('_', '-')
+            lang = lang.lower()
+            if lang not in languages:
+                languages.append(lang)
+        return languages        
     
 def initialize(context):
 
