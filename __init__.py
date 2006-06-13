@@ -133,23 +133,24 @@ class UserLanguages(object):
     def getPreferredLanguages(self):
         accept_language = self.request.HTTP_ACCEPT_LANGUAGE
         localizer_language = self.request.get('LOCALIZER_LANGUAGE')
-
-        ## Remove any spaces, change _ to -, make all lowercase:
-        #accept_language = accept_language.replace(' ', '')
-        #accept_language = accept_language.replace('_', '-')
-        #accept_language = accept_language.lower()
-        langs = []
+        accept_language = '%s;q=2.0,%s' % (localizer_language, accept_language)
+        # Normalize: Remove any spaces, change _ to -, make all lowercase:
+        accept_language = accept_language.replace(' ', '')
+        accept_language = accept_language.replace('_', '-')
+        accept_language = accept_language.lower()
+        langs = {}
         for lang in accept_language.split(','):
             if lang.find(';') != -1:
                 lang, q = lang.split(';')
                 q = float(q[2:]) # remove the "q=" and make into a float
             else:
                 q = 1.0
-            if lang == localizer_language:
-                q = 2.0
-            langs.append((q, lang))
+            if lang not in langs:
+                langs[lang] = q
                     
-        # Make into a list of tuples (with value first, and key last):
+        # Make into a list of tuples with value first, and key last 
+        # for easy sorting:
+        langs = [(q,l) for (l,q) in langs.items()]
         langs.sort()
         langs.reverse()
         # Return languages in order of quality
