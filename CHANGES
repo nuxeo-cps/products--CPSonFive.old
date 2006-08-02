@@ -8,7 +8,7 @@ New features:
   return the languages that are available for the current site.
 Bug fixes:
 ~~~~~~~~~~
--
+- The navigation now opens in the parent folder of the object you are editing.
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
 -
