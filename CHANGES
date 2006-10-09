@@ -3,10 +3,11 @@ Requires:
 -
 New features:
 ~~~~~~~~~~~~~
--
+- Now made for Five 1.3 and later. 
 Bug fixes:
 ~~~~~~~~~~
--
+- The "Updated on" text had stopped working, so I changed it for Five 1.3
+  support.
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
 -

@@ -57,11 +57,8 @@ class ISO15Charset(object):
         '''See interface IUserPreferredCharsets'''
         return ['iso-8859-15']
 
-
-try: # Five 1.1
-    from Products.Five.form import EditView, Update, applyWidgetsChanges
-except ImportError: # Five 1.0
-    from Products.Five.browser import EditView, Update
+from zope.event import notify
+from Products.Five.form import EditView, Update, applyWidgetsChanges
 from zope.app.form.interfaces import WidgetsError
 from zope.app.form.utility import setUpEditWidgets, applyWidgetsChanges
 from zope.app.event.objectevent import ObjectModifiedEvent
@@ -87,12 +84,18 @@ def EditViewUpdate(self):
             changed = applyWidgetsChanges(self, self.schema,
                 target=content, names=self.fieldNames)
             # We should not generate events when an adapter is used.
-            # That's the adapter's job.
-            if changed and self.context is self.adapted:
+            # That's the adapter's job.  We need to unwrap the objects to
+            # compare them, as they are wrapped differently.
+            # Additionally, we can't use Acquisition.aq_base() because
+            # it strangely returns different objects for these two even
+            # when they are identical.  In particular
+            # aq_base(self.adapted) != self.adapted.aq_base :-(
+            if changed and getattr(self.context, 'aq_base', self.context)\
+                        is getattr(self.adapted, 'aq_base', self.adapted):
                 notify(ObjectModifiedEvent(content))
         except WidgetsError, errors:
             self.errors = errors
-            status = _("An error occured.")
+            status = _("An error occurred.")
             transaction.abort()
         else:
             setUpEditWidgets(self, self.schema, source=self.adapted,
@@ -100,19 +103,20 @@ def EditViewUpdate(self):
                              names=self.fieldNames)
             if changed:
                 self.changed()
-                # It's going to be very nice to drop Five 1.0.x support:
+                # CPS Patch begins here.
                 localizer = getattr(self.context, 'Localizer', None)
-                if localizer is not None:
-                    
+                if localizer is not None:                    
                     status = localizer.default("Updated on %(date_time)s")
                     format = str(localizer.default('date_medium'))
                     date = datetime.datetime.now().strftime(format)
-                    status = status % {'date_time': date}
                 else:
-                    status = _("Updated on ${date_time}")
-                    status.mapping = {'date_time': str(datetime.utcnow())}
+                    date = str(datetime.utcnow())
+                    
+                status = _("Updated on ${date_time}",
+                           mapping={'date_time': date})
 
     self.update_status = status
+
     return status
 
 from zope.i18n.interfaces import IUserPreferredLanguages, ILanguageAvailability
