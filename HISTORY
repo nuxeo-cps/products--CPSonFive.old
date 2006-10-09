@@ -1,3 +1,24 @@
+===========================================================
+Package: CPSonFive 1.6.0
+===========================================================
+First release built by: lregebro at: 2006-10-09T18:59:43
+SVN Tag: https://svn.nuxeo.org/pub/CPS3/products/CPSonFive/tags/1.6.0
+Build from: https://svn.nuxeo.org/pub/CPS3/products/CPSonFive/trunk@49436
+
+Requires:
+~~~~~~~~~
+-
+New features:
+~~~~~~~~~~~~~
+- Now made for Five 1.3 and later. 
+Bug fixes:
+~~~~~~~~~~
+- The "Updated on" text had stopped working, so I changed it for Five 1.3
+  support.
+New internal features:
+~~~~~~~~~~~~~~~~~~~~~~
+-
+
 *******************************************
 ** CPSonFive V1.5.0 [R1 build 2006/08/03-09:25 by fermigier]
 ** SVN URL: https://svn.nuxeo.org/pub/CPS3/products/CPSonFive/trunk Revision: 47852
