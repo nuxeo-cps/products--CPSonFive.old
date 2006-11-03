@@ -1,4 +1,24 @@
 ===========================================================
+Package: CPSonFive 1.6.1
+===========================================================
+First release built by: lregebro at: 2006-11-03T11:02:05
+SVN Tag: http://svn.nuxeo.org/pub/CPS3/products/CPSonFive/tags/1.6.1
+Build from: http://svn.nuxeo.org/pub/CPS3/products/CPSonFive/trunk@49922
+
+Requires
+~~~~~~~~
+-
+New features
+~~~~~~~~~~~~
+-
+Bug fixes
+~~~~~~~~~
+- [packaging] bundleman svn property
+New internal features
+~~~~~~~~~~~~~~~~~~~~~
+- 
+
+===========================================================
 Package: CPSonFive 1.6.0
 ===========================================================
 First release built by: lregebro at: 2006-10-09T18:59:43
